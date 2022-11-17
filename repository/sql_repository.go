@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	ErrNotExists = errors.New("row not exists")
+	ErrNotExists = errors.New("Row does not exists")
 )
 
 type SQLiteRepository struct {
@@ -56,7 +56,7 @@ func (r *SQLiteRepository) AggregatedCategoryScoresForPeriod(start_date, end_dat
 	for rows.Next() {
 		var cs CategoryScore
 		if err := rows.Scan(&cs.Category, &cs.DateScores, &cs.RatingCount, &cs.TotalScore); err != nil {
-			return nil, fmt.Errorf("failed to scan data into struct, %w", err)
+			return nil, fmt.Errorf("Failed to scan data into struct, %w", err)
 		}
 		all = append(all, cs)
 	}
@@ -96,7 +96,7 @@ func (r *SQLiteRepository) TicketScoresForPeriod(start_date, end_date int64) ([]
 	for rows.Next() {
 		var ts TicketScore
 		if err := rows.Scan(&ts.ID, &ts.CategoryScores); err != nil {
-			return nil, fmt.Errorf("failed to scan data into struct, %w", err)
+			return nil, fmt.Errorf("Failed to scan data into struct, %w", err)
 		}
 		all = append(all, ts)
 	}

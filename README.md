@@ -22,7 +22,7 @@ A gRCP server which provides endpoints following endpoints:
   
 * Start the server via 
     ```go
-    go get
+    go mod tidy
     go run ./server/server.go
     ```
 

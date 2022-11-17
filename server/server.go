@@ -39,7 +39,7 @@ func (*server) GetAggregatedCategoryScoresForPeriod(ctx context.Context, req *pb
 	data, err := repository.AggregatedCategoryScoresForPeriod(start_date, end_date)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, status.Error(codes.Internal, "AggregatedCategoryScoresForPeriod failed")
 	}
 	return presenter.ScoresPresenter(data), nil
 }
@@ -60,7 +60,7 @@ func (*server) GetTicketScoresForPeriod(ctx context.Context, req *pb.Interval) (
 	data, err := repository.TicketScoresForPeriod(start_date, end_date)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, status.Error(codes.Internal, "TicketScoresForPeriod failed")
 	}
 	return presenter.TicketPresenter(data), nil
 }
@@ -79,12 +79,10 @@ func (*server) GetOverallScoreForPeriod(ctx context.Context, req *pb.Interval) (
 
 	repository := repository.NewSQLiteRepository(db)
 
-	data, err := repository.OveralScoresForPeriod(start_date, end_date)
+	data, err := repository.OverallScoresForPeriod(start_date, end_date)
 	if err != nil {
-		if err != nil {
-			log.Println(err)
-			return nil, err
-		}
+		log.Println(err)
+		return nil, status.Error(codes.Internal, "OveralScoresForPeriod failed")
 	}
 	return presenter.OverallScorePresenter(data), nil
 }

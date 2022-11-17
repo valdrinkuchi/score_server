@@ -48,7 +48,7 @@ func (r *SQLiteRepository) AggregatedCategoryScoresForPeriod(start_date, end_dat
 	rows, err := r.db.Query(q, end_date, start_date, start_date, end_date, end_date, start_date)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Couldn't query data, %w", err)
 	}
 	defer rows.Close()
 
@@ -88,7 +88,7 @@ func (r *SQLiteRepository) TicketScoresForPeriod(start_date, end_date int64) ([]
 	rows, err := r.db.Query(q, start_date, end_date)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to query rows, %w", err)
 	}
 	defer rows.Close()
 
@@ -103,7 +103,7 @@ func (r *SQLiteRepository) TicketScoresForPeriod(start_date, end_date int64) ([]
 	return all, nil
 }
 
-func (r *SQLiteRepository) OveralScoresForPeriod(start_date, end_date int64) (Score, error) {
+func (r *SQLiteRepository) OverallScoresForPeriod(start_date, end_date int64) (Score, error) {
 	q := `
 	select
 	round(avg(case

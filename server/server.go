@@ -33,7 +33,7 @@ func (*server) GetAggregatedCategoryScoresForPeriod(ctx context.Context, req *pb
 		log.Println(err)
 		return nil, status.Error(codes.Internal, "cannot open sqlite database")
 	}
-
+	defer db.Close()
 	repository := repository.NewSQLiteRepository(db)
 
 	data, err := repository.AggregatedCategoryScoresForPeriod(start_date, end_date)
@@ -54,7 +54,7 @@ func (*server) GetTicketScoresForPeriod(ctx context.Context, req *pb.Interval) (
 		log.Println(err)
 		return nil, status.Error(codes.Internal, "cannot open sqlite database")
 	}
-
+	defer db.Close()
 	repository := repository.NewSQLiteRepository(db)
 
 	data, err := repository.TicketScoresForPeriod(start_date, end_date)
@@ -74,6 +74,8 @@ func (*server) GetOverallScoreForPeriod(ctx context.Context, req *pb.Interval) (
 		log.Println(err)
 		return nil, status.Error(codes.Internal, "cannot open sqlite database")
 	}
+
+	defer db.Close()
 
 	repository := repository.NewSQLiteRepository(db)
 

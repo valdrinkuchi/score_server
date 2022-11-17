@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package score;
+option go_package = "gen/scorepb";
+
+service Scores {
+  rpc GetAggregatedCategoryScoresForPeriod(Interval) returns (AggregatedCategoryScoresResponse) {}
+  rpc GetTicketScoresForPeriod(Interval) returns (TicketScoresResponse) {}
+  rpc GetOverallScoreForPeriod (Interval) returns (OverallScoreResponse) {}
+}
+
+message Interval {
+  int64 start_date = 1;
+  int64 end_date = 2;
+}
+
+message AggregatedCategoryScoresResponse {
+  repeated AggregatedCategoryScore data = 1;
+}
+
+message AggregatedCategoryScore {
+  string category_name = 1;
+  int32 rating_count = 2;
+  repeated DateScores dates = 3;
+  double score = 4;
+}
+
+message TicketScoresResponse {
+  repeated TicketScore ticket_scores = 1;
+}
+
+message TicketScore {
+  int64 id = 1;
+  repeated CategoryScore category_scores = 2;
+}
+
+message CategoryScore {
+  string category_name = 1;
+  double score = 2;
+}
+
+message OverallScoreResponse {
+  double score = 1;
+}
+
+message DateScores {
+  string date = 1;
+  double score = 2;
+}

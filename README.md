@@ -9,7 +9,7 @@ A gRCP server which provides endpoints following endpoints:
 
 ## Usage
 
-* Clone the frontend repo from [Link](URL 'https://github.com/valdrinkuchi/score_web')
+* Clone the frontend repo from [https://github.com/valdrinkuchi/score_web](URL 'Link')
 * Follow the instructions to start the frontend app.
 * Run Envoy Proxy on local terminal
   ```sh

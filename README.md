@@ -11,7 +11,7 @@ A gRCP server which provides endpoints following endpoints:
 
 * Clone the frontend repo from [Link](URL 'https://github.com/valdrinkuchi/score_web')
 * Follow the instructions to start the frontend app.
-* Run Envoy Proxy
+* Run Envoy Proxy on local terminal
   ```sh
     docker run -p 8080:8080 valdrinkuchi/envoy_proxy:latest
   ``` 

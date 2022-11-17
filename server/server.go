@@ -12,6 +12,8 @@ import (
 	pb "github.com/valdrinkuchi/score_server/proto_files"
 	"github.com/valdrinkuchi/score_server/repository"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const (
@@ -28,14 +30,16 @@ func (*server) GetAggregatedCategoryScoresForPeriod(ctx context.Context, req *pb
 	end_date := req.GetEndDate()
 	db, err := sql.Open("sqlite3", "database.db")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, status.Error(codes.Internal, "cannot open sqlite database")
 	}
 
 	repository := repository.NewSQLiteRepository(db)
 
 	data, err := repository.AggregatedCategoryScoresForPeriod(start_date, end_date)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	return presenter.ScoresPresenter(data), nil
 }
@@ -47,14 +51,16 @@ func (*server) GetTicketScoresForPeriod(ctx context.Context, req *pb.Interval) (
 
 	db, err := sql.Open("sqlite3", "database.db")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, status.Error(codes.Internal, "cannot open sqlite database")
 	}
 
 	repository := repository.NewSQLiteRepository(db)
 
 	data, err := repository.TicketScoresForPeriod(start_date, end_date)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	return presenter.TicketPresenter(data), nil
 }
@@ -65,14 +71,18 @@ func (*server) GetOverallScoreForPeriod(ctx context.Context, req *pb.Interval) (
 	end_date := req.GetEndDate()
 	db, err := sql.Open("sqlite3", "database.db")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, status.Error(codes.Internal, "cannot open sqlite database")
 	}
 
 	repository := repository.NewSQLiteRepository(db)
 
 	data, err := repository.OveralScoresForPeriod(start_date, end_date)
 	if err != nil {
-		log.Fatal(err)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
 	}
 	return presenter.OverallScorePresenter(data), nil
 }
@@ -80,6 +90,7 @@ func (*server) GetOverallScoreForPeriod(ctx context.Context, req *pb.Interval) (
 func main() {
 	fmt.Println("Boom")
 	lis, err := net.Listen("tcp", ADDRESS)
+
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
